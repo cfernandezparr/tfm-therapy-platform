@@ -14,4 +14,8 @@ public interface UserService {
     List<UserOutputDTO> getAll();
 
     UserOutputDTO getCurrentUser();
+
+    void requestTherapist();
+
+    void makeTherapist(Long id);
 }

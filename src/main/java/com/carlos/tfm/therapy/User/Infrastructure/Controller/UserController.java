@@ -37,4 +37,16 @@ public class UserController {
     public UserOutputDTO getCurrentUser() {
         return userService.getCurrentUser();
     }
+
+    @PostMapping("/request-therapist")
+    @ResponseStatus(HttpStatus.OK)
+    public void requestTherapist() {
+        userService.requestTherapist();
+    }
+
+    @PutMapping("/{id}/make-therapist")
+    @ResponseStatus(HttpStatus.OK)
+    public void makeTherapist(@PathVariable Long id) {
+        userService.makeTherapist(id);
+    }
 }

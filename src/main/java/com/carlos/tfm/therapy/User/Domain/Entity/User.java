@@ -45,6 +45,11 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Boolean enabled = true;
 
+    // NUEVO CAMPO → solicitud de therapist
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean therapistRequested = false;
+
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Appointment> patientAppointments = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.carlos.tfm.therapy.User.Application.Service;
 
 import com.carlos.tfm.therapy.Exception.Exceptions.EntityExistsException;
 import com.carlos.tfm.therapy.Exception.Exceptions.EntityNotFound;
+import com.carlos.tfm.therapy.User.Domain.Entity.Role;
 import com.carlos.tfm.therapy.User.Domain.Entity.User;
 import com.carlos.tfm.therapy.User.Domain.Mapper.UserMapper;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.UserInputDTO;
@@ -56,5 +57,27 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFound("User not found"));
 
         return userMapper.toOutputDTO(user);
+    }
+
+    @Override
+    public void requestTherapist() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFound("User not found"));
+
+        user.setTherapistRequested(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void makeTherapist(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFound("User not found"));
+
+        user.setRole(Role.THERAPIST);
+        user.setTherapistRequested(false);
+
+        userRepository.save(user);
     }
 }
