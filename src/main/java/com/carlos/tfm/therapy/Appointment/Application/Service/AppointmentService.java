@@ -12,4 +12,6 @@ public interface AppointmentService {
     AppointmentOutputDTO getById(Long id);
 
     List<AppointmentOutputDTO> getAll();
+
+    List<AppointmentOutputDTO> getMyAppointments();
 }

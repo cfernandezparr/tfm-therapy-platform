@@ -95,4 +95,30 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointmentMapper::toOutputDTO)
                 .toList();
     }
+
+    @Override
+    public List<AppointmentOutputDTO> getMyAppointments() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFound("User not found"));
+
+        if (user.getRole() == Role.USER) {
+            return appointmentRepository.findByPatient(user)
+                    .stream()
+                    .map(appointmentMapper::toOutputDTO)
+                    .toList();
+        }
+
+        if (user.getRole() == Role.THERAPIST) {
+            return appointmentRepository.findByTherapist(user)
+                    .stream()
+                    .map(appointmentMapper::toOutputDTO)
+                    .toList();
+        }
+
+        return List.of();
+    }
 }

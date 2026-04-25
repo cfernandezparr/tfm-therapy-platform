@@ -32,4 +32,9 @@ public class AppointmentController {
     public List<AppointmentOutputDTO> getAll() {
         return appointmentService.getAll();
     }
+
+    @GetMapping("/me")
+    public List<AppointmentOutputDTO> getMyAppointments() {
+        return appointmentService.getMyAppointments();
+    }
 }
