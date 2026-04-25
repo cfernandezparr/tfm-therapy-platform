@@ -12,4 +12,6 @@ public interface UserService {
     UserOutputDTO getById(Long id);
 
     List<UserOutputDTO> getAll();
+
+    UserOutputDTO getCurrentUser();
 }

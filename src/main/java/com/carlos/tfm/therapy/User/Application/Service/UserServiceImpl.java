@@ -8,6 +8,7 @@ import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.UserInputDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Output.UserOutputDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +46,15 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(userMapper::toOutputDTO)
                 .toList();
+    }
+
+    @Override
+    public UserOutputDTO getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFound("User not found"));
+
+        return userMapper.toOutputDTO(user);
     }
 }

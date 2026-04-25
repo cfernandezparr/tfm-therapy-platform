@@ -32,4 +32,9 @@ public class UserController {
     public List<UserOutputDTO> getAll() {
         return userService.getAll();
     }
+
+    @GetMapping("/me")
+    public UserOutputDTO getCurrentUser() {
+        return userService.getCurrentUser();
+    }
 }
