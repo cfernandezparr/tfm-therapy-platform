@@ -35,9 +35,9 @@ public class AuthService {
             throw new RuntimeException("A user with this email already exists");
         }
 
-        if (request.getRole() != null && request.getRole() == Role.ADMIN) {
-            throw new RuntimeException("Cannot register as ADMIN");
-        }
+        //if (request.getRole() != null && request.getRole() == Role.ADMIN) {
+        //    throw new RuntimeException("Cannot register as ADMIN");
+        //}
 
         Role roleToAssign;
 
