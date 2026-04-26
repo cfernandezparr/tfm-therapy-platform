@@ -40,13 +40,30 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
+                        // preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // auth pública
                         .requestMatchers("/auth/**").permitAll()
+
+                        // consola h2 (dev)
                         .requestMatchers("/h2-console/**").permitAll()
+
+                        // usuario autenticado
+                        .requestMatchers("/api/users/me").authenticated()
+
+                        // solicitud therapist (solo USER)
+                        .requestMatchers(HttpMethod.POST, "/api/users/request-therapist").hasRole("USER")
+
+                        // admin
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
+
+                        // resto módulos
                         .requestMatchers("/api/appointments/**").hasAnyRole("USER", "THERAPIST")
                         .requestMatchers("/api/payments/**").hasRole("USER")
                         .requestMatchers("/api/sessions/**").hasAnyRole("USER", "THERAPIST")
+
+                        // cualquier otra petición
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
