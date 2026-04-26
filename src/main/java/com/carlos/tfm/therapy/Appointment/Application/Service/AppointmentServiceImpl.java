@@ -70,7 +70,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Appointment appointment = Appointment.builder()
                 .appointmentDate(appointmentDate)
-                .status(AppointmentStatus.PENDING)
+                .status(AppointmentStatus.CONFIRMED)
                 .patient(patient)
                 .therapist(therapist)
                 .build();
