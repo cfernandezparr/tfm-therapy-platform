@@ -12,6 +12,6 @@ public interface UserMapper {
     User toEntity(UserInputDTO userInputDTO);
 
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "therapistRequested", source = "therapistRequested") 
+    @Mapping(target = "therapistRequested", source = "therapistRequested")
     UserOutputDTO toOutputDTO(User user);
 }

@@ -18,4 +18,6 @@ public interface UserService {
     void requestTherapist();
 
     void makeTherapist(Long id);
+
+    void rejectTherapist(Long id);
 }

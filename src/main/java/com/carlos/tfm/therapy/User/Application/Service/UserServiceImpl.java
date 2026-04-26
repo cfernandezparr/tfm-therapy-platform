@@ -80,4 +80,14 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
     }
+
+    @Override
+    public void rejectTherapist(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFound("User not found"));
+
+        user.setTherapistRequested(false);
+
+        userRepository.save(user);
+    }
 }

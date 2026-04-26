@@ -49,4 +49,10 @@ public class UserController {
     public void makeTherapist(@PathVariable Long id) {
         userService.makeTherapist(id);
     }
+
+    @PutMapping("/{id}/reject-therapist")
+    @ResponseStatus(HttpStatus.OK)
+    public void rejectTherapist(@PathVariable Long id) {
+        userService.rejectTherapist(id);
+    }
 }
