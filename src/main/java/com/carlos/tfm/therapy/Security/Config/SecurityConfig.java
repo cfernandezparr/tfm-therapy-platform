@@ -51,6 +51,7 @@ public class SecurityConfig {
 
                         // usuario autenticado
                         .requestMatchers("/api/users/me").authenticated()
+                        .requestMatchers("/api/users/therapists").hasRole("USER")
 
                         // solicitud therapist (solo USER)
                         .requestMatchers(HttpMethod.POST, "/api/users/request-therapist").hasRole("USER")

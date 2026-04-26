@@ -90,4 +90,13 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
     }
+
+    @Override
+    public List<UserOutputDTO> getTherapists() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> user.getRole() == Role.THERAPIST)
+                .map(userMapper::toOutputDTO)
+                .toList();
+    }
 }

@@ -55,4 +55,8 @@ public class UserController {
     public void rejectTherapist(@PathVariable Long id) {
         userService.rejectTherapist(id);
     }
+    @GetMapping("/therapists")
+    public List<UserOutputDTO> getTherapists() {
+        return userService.getTherapists();
+    }
 }

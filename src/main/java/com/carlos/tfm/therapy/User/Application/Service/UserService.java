@@ -20,4 +20,6 @@ public interface UserService {
     void makeTherapist(Long id);
 
     void rejectTherapist(Long id);
+
+    List<UserOutputDTO> getTherapists();
 }
