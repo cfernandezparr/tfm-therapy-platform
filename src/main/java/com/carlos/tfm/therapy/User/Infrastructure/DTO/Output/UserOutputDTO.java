@@ -16,4 +16,5 @@ public class UserOutputDTO {
     private String lastName;
     private Role role;
     private Boolean enabled;
+    private Boolean therapistRequested;
 }
