@@ -2,6 +2,7 @@ package com.carlos.tfm.therapy.Session.Infrastructure.Controller;
 
 import com.carlos.tfm.therapy.Session.Application.Service.SessionService;
 import com.carlos.tfm.therapy.Session.Infrastructure.DTO.Input.SessionInputDTO;
+import com.carlos.tfm.therapy.Session.Infrastructure.DTO.Input.SessionNotesInputDTO;
 import com.carlos.tfm.therapy.Session.Infrastructure.DTO.Output.SessionOutputDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,14 @@ public class SessionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancel(@PathVariable Long id) {
         sessionService.cancelSession(id);
+    }
+
+    @PutMapping("/{id}/notes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void saveNotes(
+            @PathVariable Long id,
+            @RequestBody SessionNotesInputDTO dto
+    ) {
+        sessionService.saveNotes(id, dto.getNotes());
     }
 }

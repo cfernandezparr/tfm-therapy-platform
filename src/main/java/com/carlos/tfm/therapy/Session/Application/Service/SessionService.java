@@ -14,4 +14,6 @@ public interface SessionService {
     List<SessionOutputDTO> getAll();
 
     void cancelSession(Long sessionId);
+
+    void saveNotes(Long sessionId, String notes);
 }

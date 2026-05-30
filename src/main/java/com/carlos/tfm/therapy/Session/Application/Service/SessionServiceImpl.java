@@ -119,4 +119,15 @@ public class SessionServiceImpl implements SessionService {
                 .map(sessionMapper::toOutputDTO)
                 .toList();
     }
+
+    @Override
+    public void saveNotes(Long sessionId, String notes) {
+
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new EntityNotFound("Session not found"));
+
+        session.setTherapistNotes(notes);
+
+        sessionRepository.save(session);
+    }
 }
