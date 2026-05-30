@@ -106,16 +106,44 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new EntityNotFound("User not found"));
 
         if (user.getRole() == Role.USER) {
+
             return appointmentRepository.findByPatient(user)
                     .stream()
-                    .map(appointmentMapper::toOutputDTO)
+                    .map(appointment -> {
+
+                        AppointmentOutputDTO dto =
+                                appointmentMapper.toOutputDTO(appointment);
+
+                        if (
+                                dto.getStatus() == AppointmentStatus.CONFIRMED &&
+                                        dto.getAppointmentDate().isBefore(LocalDateTime.now())
+                        ) {
+                            dto.setStatus(AppointmentStatus.COMPLETED);
+                        }
+
+                        return dto;
+                    })
                     .toList();
         }
 
         if (user.getRole() == Role.THERAPIST) {
+
             return appointmentRepository.findByTherapist(user)
                     .stream()
-                    .map(appointmentMapper::toOutputDTO)
+                    .map(appointment -> {
+
+                        AppointmentOutputDTO dto =
+                                appointmentMapper.toOutputDTO(appointment);
+
+                        if (
+                                dto.getStatus() == AppointmentStatus.CONFIRMED &&
+                                        dto.getAppointmentDate().isBefore(LocalDateTime.now())
+                        ) {
+                            dto.setStatus(AppointmentStatus.COMPLETED);
+                        }
+
+                        return dto;
+                    })
                     .toList();
         }
 
