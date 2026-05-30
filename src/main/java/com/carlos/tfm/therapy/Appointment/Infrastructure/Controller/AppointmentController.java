@@ -37,4 +37,10 @@ public class AppointmentController {
     public List<AppointmentOutputDTO> getMyAppointments() {
         return appointmentService.getMyAppointments();
     }
+
+    @PutMapping("/{id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelAppointment(@PathVariable Long id) {
+        appointmentService.cancelAppointment(id);
+    }
 }

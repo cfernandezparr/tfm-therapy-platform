@@ -9,6 +9,8 @@ import com.carlos.tfm.therapy.Appointment.Infrastructure.Repository.AppointmentR
 import com.carlos.tfm.therapy.Availability.Infrastructure.Repository.AvailabilityRepository;
 import com.carlos.tfm.therapy.Exception.Exceptions.EntityNotFound;
 import com.carlos.tfm.therapy.Exception.Exceptions.InvalidOperationException;
+import com.carlos.tfm.therapy.Payment.Domain.Entity.PaymentStatus;
+import com.carlos.tfm.therapy.Session.Domain.Entity.SessionStatus;
 import com.carlos.tfm.therapy.User.Domain.Entity.Role;
 import com.carlos.tfm.therapy.User.Domain.Entity.User;
 import com.carlos.tfm.therapy.User.Infrastructure.Repository.UserRepository;
@@ -82,6 +84,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentOutputDTO getById(Long id) {
+
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Appointment not found"));
 
@@ -90,6 +93,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentOutputDTO> getAll() {
+
         return appointmentRepository.findAll()
                 .stream()
                 .map(appointmentMapper::toOutputDTO)
@@ -148,5 +152,24 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         return List.of();
+    }
+
+    @Override
+    public void cancelAppointment(Long id) {
+
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFound("Appointment not found"));
+
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+
+        if (appointment.getPayment() != null) {
+            appointment.getPayment().setStatus(PaymentStatus.REFUNDED);
+        }
+
+        if (appointment.getSession() != null) {
+            appointment.getSession().setStatus(SessionStatus.CANCELLED);
+        }
+
+        appointmentRepository.save(appointment);
     }
 }
