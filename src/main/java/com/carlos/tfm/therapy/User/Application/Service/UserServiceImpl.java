@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::toOutputDTO)
                 .toList();
     }
-    
+
     @Override
     public void updateAvatar(AvatarUpdateDTO dto) {
 

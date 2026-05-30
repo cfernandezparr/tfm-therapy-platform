@@ -40,19 +40,28 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
+
+                        // CORS preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        // Públicos
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
 
+                        // 👇 IMPORTANTE: estos antes que cualquier /api/users/**
                         .requestMatchers("/api/users/me").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/users/avatar").authenticated()
+
+                        // USER
+                        .requestMatchers(HttpMethod.POST, "/api/users/request-therapist").hasRole("USER")
                         .requestMatchers("/api/users/therapists").hasRole("USER")
 
-                        .requestMatchers(HttpMethod.POST, "/api/users/request-therapist").hasRole("USER")
-
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        // ADMIN (SIN pisar avatar)
+                        .requestMatchers("/api/users").hasRole("ADMIN")
+                        .requestMatchers("/api/users/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/users/*/reject-therapist").hasRole("ADMIN")
 
+                        // Otros módulos
                         .requestMatchers("/api/appointments/**").hasAnyRole("USER", "THERAPIST")
                         .requestMatchers("/api/payments/**").hasRole("USER")
                         .requestMatchers("/api/sessions/**").hasAnyRole("USER", "THERAPIST")
