@@ -6,6 +6,7 @@ import com.carlos.tfm.therapy.Exception.Exceptions.EntityExistsException;
 import com.carlos.tfm.therapy.Exception.Exceptions.EntityNotFound;
 import com.carlos.tfm.therapy.Exception.Exceptions.InvalidOperationException;
 import com.carlos.tfm.therapy.Payment.Domain.Entity.PaymentStatus;
+import com.carlos.tfm.therapy.Security.Service.EncryptionService;
 import com.carlos.tfm.therapy.Session.Domain.Entity.Session;
 import com.carlos.tfm.therapy.Session.Domain.Entity.SessionStatus;
 import com.carlos.tfm.therapy.Session.Domain.Mapper.SessionMapper;
@@ -28,6 +29,7 @@ public class SessionServiceImpl implements SessionService {
     private final SessionRepository sessionRepository;
     private final AppointmentRepository appointmentRepository;
     private final SessionMapper sessionMapper;
+    private final EncryptionService encryptionService;
 
     @Value("${app.session.duration:45}")
     private int sessionDuration;
@@ -106,10 +108,22 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public SessionOutputDTO getById(Long id) {
+
         Session session = sessionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Session not found"));
 
-        return sessionMapper.toOutputDTO(session);
+        SessionOutputDTO dto = sessionMapper.toOutputDTO(session);
+
+        if (session.getTherapistNotes() != null) {
+
+            dto.setNotes(
+                    encryptionService.decrypt(
+                            session.getTherapistNotes()
+                    )
+            );
+        }
+
+        return dto;
     }
 
     @Override
@@ -126,7 +140,9 @@ public class SessionServiceImpl implements SessionService {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new EntityNotFound("Session not found"));
 
-        session.setTherapistNotes(notes);
+        session.setTherapistNotes(
+                encryptionService.encrypt(notes)
+        );
 
         sessionRepository.save(session);
     }
