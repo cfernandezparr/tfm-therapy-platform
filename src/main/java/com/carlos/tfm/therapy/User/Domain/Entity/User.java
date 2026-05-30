@@ -37,6 +37,10 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 120)
     private String lastName;
 
+    // NUEVO CAMPO → avatar (URL)
+    @Column(length = 255)
+    private String avatarUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Role role;
@@ -45,7 +49,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    // NUEVO CAMPO → solicitud de therapist
     @Builder.Default
     @Column(nullable = false)
     private Boolean therapistRequested = false;

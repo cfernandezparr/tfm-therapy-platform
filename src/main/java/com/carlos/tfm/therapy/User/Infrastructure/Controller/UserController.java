@@ -1,6 +1,7 @@
 package com.carlos.tfm.therapy.User.Infrastructure.Controller;
 
 import com.carlos.tfm.therapy.User.Application.Service.UserService;
+import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.AvatarUpdateDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.UserInputDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Output.UserOutputDTO;
 import jakarta.validation.Valid;
@@ -55,8 +56,15 @@ public class UserController {
     public void rejectTherapist(@PathVariable Long id) {
         userService.rejectTherapist(id);
     }
+
     @GetMapping("/therapists")
     public List<UserOutputDTO> getTherapists() {
         return userService.getTherapists();
+    }
+
+    @PutMapping("/avatar")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateAvatar(@RequestBody AvatarUpdateDTO dto) {
+        userService.updateAvatar(dto);
     }
 }

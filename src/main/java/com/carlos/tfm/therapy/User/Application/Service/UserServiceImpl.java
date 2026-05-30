@@ -6,6 +6,7 @@ import com.carlos.tfm.therapy.User.Domain.Entity.Role;
 import com.carlos.tfm.therapy.User.Domain.Entity.User;
 import com.carlos.tfm.therapy.User.Domain.Mapper.UserMapper;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.UserInputDTO;
+import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.AvatarUpdateDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Output.UserOutputDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -98,5 +99,18 @@ public class UserServiceImpl implements UserService {
                 .filter(user -> user.getRole() == Role.THERAPIST)
                 .map(userMapper::toOutputDTO)
                 .toList();
+    }
+    
+    @Override
+    public void updateAvatar(AvatarUpdateDTO dto) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFound("User not found"));
+
+        user.setAvatarUrl(dto.getAvatarUrl());
+
+        userRepository.save(user);
     }
 }

@@ -1,6 +1,7 @@
 package com.carlos.tfm.therapy.User.Application.Service;
 
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.UserInputDTO;
+import com.carlos.tfm.therapy.User.Infrastructure.DTO.Input.AvatarUpdateDTO;
 import com.carlos.tfm.therapy.User.Infrastructure.DTO.Output.UserOutputDTO;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface UserService {
     void rejectTherapist(Long id);
 
     List<UserOutputDTO> getTherapists();
+
+    void updateAvatar(AvatarUpdateDTO dto);
 }
