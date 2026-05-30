@@ -62,7 +62,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/users/*/reject-therapist").hasRole("ADMIN")
 
                         // Otros módulos
-                        .requestMatchers("/api/appointments/**").hasAnyRole("USER", "THERAPIST")
+                        .requestMatchers("/api/appointments/**").hasAnyRole("USER", "THERAPIST", "ADMIN")
                         .requestMatchers("/api/payments/**").hasRole("USER")
                         .requestMatchers("/api/sessions/**").hasAnyRole("USER", "THERAPIST")
 
